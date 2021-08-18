@@ -1,9 +1,9 @@
-const FactoryProducto = require("../factory/factoryProducto.service.js");
+const FactoryProducto = require("../factory/factoryProducto.service.js")
 const logger = require("../helpers/winston.js")
 
-//* params para ingresar en new Producto según DB
-//* 1 - MongoDB (Cloud) / 2 - FS / 3 - Sql Local / Array (default)
-const factory = new FactoryProducto(2)
+//* 1 - MongoDB / 2 - FS / 3 - Sql Local / Array (default)
+const dbNum = process.argv[2]
+const factory = new FactoryProducto(parseInt(dbNum))
 
 class Producto {
   async add(req, res) {
@@ -13,8 +13,8 @@ class Producto {
           .status(404)
           .json({ mensaje: "Error al agregar un producto" })
       }
-      const data = { ...(await req.body) } //para que funcione con sockets.io cambiar a req.productos
-      factory.addServiceProducto(data)
+      const data = { ...(await req.body) }; //para que funcione con sockets.io cambiar a req.productos
+      factory.addServiceProducto(data);
       return res.status(200).json("Producto agregado correctamente")
     } catch (error) {
       logger.error.error(error)

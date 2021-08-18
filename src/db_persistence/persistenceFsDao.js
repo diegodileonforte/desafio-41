@@ -1,14 +1,14 @@
-const logger = require("../helpers/winston.js")
+const DatabaseProductoDao = require("../DAO/DatabaseProductoDao.js")
 const fs = require("fs")
+const logger = require("../helpers/winston.js")
 const path = require("path")
 const _dirname = path.resolve(__dirname)
-
+const productoDto = require ("../DTO/productoDto.js")
 let producto = []
 
-console.log(_dirname + "/files/productos.json")
-
-class FsDb {
+class FsDb extends DatabaseProductoDao {
   constructor() {
+    super()
     this.createJson = this.readJson
     this.msg = console.log("Base de Datos FS")
   }
@@ -52,9 +52,10 @@ class FsDb {
 
   async findByIDPersistenceProducto(_id) {
     try {
-      const prodById = await this.readJson();
+      const prodById = await this.readJson()
       let prodFiltro = await prodById.find((prod) => prod._id == parseInt(_id))
-      return prodFiltro
+      const myDto = productoDto(prodFiltro)
+      return myDto
     } catch (error) {
       logger.error.error(error)
     }
@@ -68,7 +69,7 @@ class FsDb {
       );
       this.saveJson(prodDrop)
       producto.push(prodDrop)
-      return prodDrop;
+      return prodDrop
     } catch (error) {
       logger.error.error(error)
     }
@@ -76,7 +77,7 @@ class FsDb {
 
   async updatePersistenceProducto(_id, data) {
     try {
-      console.log('DATA',data);
+      console.log('DATA',data)
       let viewProdUpdate = await this.readJson()
       console.log('JSON',viewProdUpdate)
       console.log('ID',_id)

@@ -1,8 +1,8 @@
 const logger = require("../helpers/winston.js")
-const MongoDb = require("../db_persistence/persistenceMongo.js")
-const FsDb = require("../db_persistence/persistenceFs.js")
-const ArrayDb = require("../db_persistence/persistenceArray.js")
-const MysqlDb = require("../db_persistence/persistenceMysql.js")
+const MongoDb = require("../db_persistence/persistenceMongoDao.js")
+const FsDb = require("../db_persistence/persistenceFsDao.js")
+const ArrayDb = require("../db_persistence/persistenceArrayDao.js")
+const MysqlDb = require("../db_persistence/persistenceMysqlDao.js")
 const database = ""
 
 class FactoryProducto {
@@ -11,16 +11,16 @@ class FactoryProducto {
     switch (number) {
       case 1:
         this.database = new MongoDb()
-        break
+        break;
       case 2:
         this.database = new FsDb()
-        break
+        break;
       case 3:
         this.database = new MysqlDb()
-        break
+        break;
       default:
         this.database = new ArrayDb()
-        break
+        break;
     }
   }
 
@@ -39,8 +39,8 @@ class FactoryProducto {
 
   async findAllServiceProducto() {
     try {
-      const prodInDb = await this.database.findAllPersistenceProducto();
-      return prodInDb;
+      const prodInDb = await this.database.findAllPersistenceProducto()
+      return prodInDb
     } catch (error) {
       logger.error.error(error)
     }
@@ -49,7 +49,7 @@ class FactoryProducto {
   async findByIDServiceProducto(_id) {
     try {
       const prodById = await this.database.findByIDPersistenceProducto(_id)
-      return prodById;
+      return prodById
     } catch (error) {
       logger.error.error(error)
     }
@@ -58,7 +58,7 @@ class FactoryProducto {
   async deleteServiceProducto(_id) {
     try {
       const prodToDel = await this.database.deletePersistenceProducto(_id)
-      return prodToDel;
+      return prodToDel
     } catch (error) {
       logger.error.error(error)
     }

@@ -1,9 +1,11 @@
 const logger = require("../helpers/winston.js")
-
+const DatabaseProductoDao = require("../DAO/DatabaseProductoDao.js")
+const productoDto = require ("../DTO/productoDto.js")
 let productosArray = []
 
-class ArrayDb {
+class ArrayDb extends DatabaseProductoDao {
   constructor() {
+    super()
     this.msg = console.log("Base de Datos Array")
   }
 
@@ -19,7 +21,7 @@ class ArrayDb {
 
   async findAllPersistenceProducto() {
     try {
-      return productosArray
+      return productosArray;
     } catch (error) {
       logger.error.error(error)
     }
@@ -27,8 +29,11 @@ class ArrayDb {
 
   async findByIDPersistenceProducto(_id) {
     try {
-      let prodById = await productosArray.find((prod) => prod._id == parseInt(_id))
-      return prodById
+      let prodById = await productosArray.find(
+        (prod) => prod._id == parseInt(_id)
+      );
+      const myDto = productoDto(prodById)
+      return myDto;
     } catch (error) {
       logger.error.error(error)
     }
@@ -48,13 +53,13 @@ class ArrayDb {
 
   async updatePersistenceProducto(_id, data) {
     try {
-      const newProd = { _id, ... data };
+      const newProd = { _id, ...data }
       console.log(newProd)
       const index = productosArray.findIndex((p) => p._id == _id)
       console.log(index)
       if (index !== -1) {
         productosArray.splice(index, 1, newProd)
-        return newProd
+        return newProd;
       }
     } catch (error) {
       logger.error.error(error)
