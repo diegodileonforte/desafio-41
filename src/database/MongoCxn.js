@@ -1,4 +1,7 @@
+const config = require('../config/index.js')
 const mongoose = require("mongoose")
+
+const MONGODB_URI = config.MONGODB_URI
 
 class MongoCxn {
     constructor() {
@@ -11,8 +14,8 @@ class MongoCxn {
     }
 
     createConnection() {
-        const uri =
-            "mongodb+srv://ddl:ddlcoder@cluster0.hdz0u.mongodb.net/myFirstDatabase?retryWrites=true&w=majority"
+        const uri = MONGODB_URI
+            
         const options = {
             useNewUrlParser: true,
             useCreateIndex: true,
